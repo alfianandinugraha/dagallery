@@ -114,7 +114,7 @@ const Drawer = (props: DrawerProps) => {
           }}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const { files } = e.target
-            if (!files) {
+            if (!files || !files.length) {
               return
             }
             setFile(files[0])
