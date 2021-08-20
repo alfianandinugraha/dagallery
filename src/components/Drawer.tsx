@@ -121,8 +121,23 @@ const Drawer = (props: DrawerProps) => {
             setIsLoadingConvert(true)
           }}
         />
-        <label htmlFor="input-image">
-          <FileDropzone base64={base64} isLoading={isLoadingConvert}/>
+        <label
+          htmlFor="input-image"
+          onDragOver={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+          onDrop={(e) => {
+            e.preventDefault()
+            const { files } = e.dataTransfer
+            setFile(files[0])
+            setIsLoadingConvert(true)
+          }}
+        >
+          <FileDropzone
+            base64={base64}
+            isLoading={isLoadingConvert}
+          />
         </label>
       </Grid>
       <Grid item>
