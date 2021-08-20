@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {Button, TextField} from "@material-ui/core";
@@ -36,7 +36,13 @@ const useStyles = makeStyles((props) => {
 })
 
 const Drawer = (props: DrawerProps) => {
+  const [title, setTitle] = useState("")
+  const [fileName, setFileName] = useState("")
   const classes = useStyles()
+
+  const submitForm = () => {
+    console.log({title, fileName})
+  }
 
   return (
     <MuiDrawer
@@ -59,6 +65,9 @@ const Drawer = (props: DrawerProps) => {
           fullWidth
           variant="filled"
           className={classes.textFieldRoot}
+          onChange={(e) => {
+            setTitle(e.target.value)
+          }}
         />
       </Grid>
       <Grid item>
@@ -68,13 +77,22 @@ const Drawer = (props: DrawerProps) => {
           fullWidth
           variant="filled"
           className={classes.textFieldRoot}
+          onChange={(e) => {
+            setFileName(e.target.value)
+          }}
         />
       </Grid>
       <Grid item>
         <FileDropzone/>
       </Grid>
       <Grid item>
-        <Button startIcon={<Publish/>} fullWidth color="primary" variant="contained">Upload</Button>
+        <Button
+            startIcon={<Publish/>}
+            fullWidth
+            color="primary"
+            variant="contained"
+            onClick={submitForm}
+        >Upload</Button>
       </Grid>
     </Grid>
   </MuiDrawer>)
