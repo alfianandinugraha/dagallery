@@ -9,7 +9,8 @@ import Container from "@material-ui/core/Container"
 import {Image} from "state";
 import {useState} from "react";
 import ImageItem from "@src/components/ImageItem";
-import {Add} from "@material-ui/icons";
+import {Add, Publish} from "@material-ui/icons";
+import Drawer from "@src/components/Drawer";
 
 const useStyles = makeStyles((props) => {
   return {
@@ -21,6 +22,30 @@ const useStyles = makeStyles((props) => {
     listImage: {
       [props.breakpoints.up('md')]: {
         marginTop: 24,
+        width: 888
+      },
+      [props.breakpoints.up('xl')]: {
+        width: 888
+      }
+    },
+    drawer: {
+      width: 380,
+    },
+    drawerPaper: {
+      width: 380,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      border: 'none',
+      boxShadow: '-6px 0px 16px -5px rgba(0, 0, 0, 0.25)'
+    },
+    drawerWrapper: {
+      marginTop: 30,
+      width: 328
+    },
+    textFieldRoot: {
+      '& .MuiFilledInput-root': {
+        backgroundColor: '#F6F6F6',
       }
     }
   }
@@ -50,7 +75,7 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <Box mb={3}  className={classes.heading}>
+      <Box mb={3} className={classes.heading}>
         <Typography variant="h4" style={{fontWeight: 'bold'}}>Dagallery</Typography>
       </Box>
       <Grid container spacing={2} className={classes.listImage}>
@@ -61,8 +86,11 @@ const Home: NextPage = () => {
         })}
       </Grid>
       <Fab color="primary" aria-label="add" style={{position: 'fixed', bottom: 24, right: 24}}>
-        <Add />
+        <Add/>
       </Fab>
+      <nav className={classes.drawer}>
+        <Drawer />
+      </nav>
     </Container>
   )
 }
