@@ -2,9 +2,11 @@ import React from 'react'
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import {CircularProgress} from "@material-ui/core";
 
 interface FileDropzoneProps {
   base64?: string
+  isLoading?: boolean
 }
 
 const useStyles = makeStyles((props) => {
@@ -45,6 +47,9 @@ const FileDropzone = (props: FileDropzoneProps) => {
           <img src={props.base64} alt="preview image"/>
         ) : (
           <Typography>Drop image here</Typography>
+        )}
+        {props.isLoading && (
+          <CircularProgress />
         )}
       </Grid>
     </Grid>

@@ -41,6 +41,7 @@ const Drawer = (props: DrawerProps) => {
   const [fileName, setFileName] = useState("")
   const [file, setFile] = useState<File|null>(null)
   const [base64, setBase64] = useState<string>("")
+  const [isLoadingConvert, setIsLoadingConvert] = useState(false)
   const classes = useStyles()
 
   const submitForm = () => {
@@ -56,7 +57,10 @@ const Drawer = (props: DrawerProps) => {
       return
     }
     setFileName(file.name)
-    convertBase64(file, (payload) => setBase64(payload))
+    convertBase64(file, (payload) => {
+      setBase64(payload)
+      setIsLoadingConvert(false)
+    })
   }, [file])
 
   return (
@@ -114,10 +118,11 @@ const Drawer = (props: DrawerProps) => {
               return
             }
             setFile(files[0])
+            setIsLoadingConvert(true)
           }}
         />
         <label htmlFor="input-image">
-          <FileDropzone base64={base64}/>
+          <FileDropzone base64={base64} isLoading={isLoadingConvert}/>
         </label>
       </Grid>
       <Grid item>
