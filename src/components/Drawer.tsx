@@ -38,10 +38,15 @@ const useStyles = makeStyles((props) => {
 const Drawer = (props: DrawerProps) => {
   const [title, setTitle] = useState("")
   const [fileName, setFileName] = useState("")
+  const [file, setFile] = useState<File|null>(null)
   const classes = useStyles()
 
   const submitForm = () => {
-    console.log({title, fileName})
+    if (!file) {
+      alert('Please upload image')
+      return
+    }
+    console.log({title, fileName, file})
   }
 
   return (
@@ -65,7 +70,7 @@ const Drawer = (props: DrawerProps) => {
           fullWidth
           variant="filled"
           className={classes.textFieldRoot}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setTitle(e.target.value)
           }}
         />
@@ -77,13 +82,31 @@ const Drawer = (props: DrawerProps) => {
           fullWidth
           variant="filled"
           className={classes.textFieldRoot}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setFileName(e.target.value)
           }}
         />
       </Grid>
       <Grid item>
-        <FileDropzone/>
+        <input
+          type="file"
+          id="input-image"
+          style={{
+            visibility: 'hidden',
+            height: 0,
+            display: 'none'
+          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const { files } = e.target
+            if (!files) {
+              return
+            }
+            setFile(files[0])
+          }}
+        />
+        <label htmlFor="input-image">
+          <FileDropzone/>
+        </label>
       </Grid>
       <Grid item>
         <Button
