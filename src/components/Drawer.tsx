@@ -79,6 +79,7 @@ const Drawer = (props: DrawerProps) => {
           label="Title"
           fullWidth
           variant="filled"
+          value={title}
           className={classes.textFieldRoot}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setTitle(e.target.value)
@@ -91,6 +92,7 @@ const Drawer = (props: DrawerProps) => {
           label="Filename"
           fullWidth
           variant="filled"
+          value={fileName}
           className={classes.textFieldRoot}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setFileName(e.target.value)
