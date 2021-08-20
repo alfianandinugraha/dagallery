@@ -1,6 +1,8 @@
 import React from 'react'
 import {Image} from "state";
-import {Grid, makeStyles, Typography} from "@material-ui/core";
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
 
 interface ImageItemProps extends Image {
 }

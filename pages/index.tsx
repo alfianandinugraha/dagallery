@@ -1,12 +1,17 @@
+import React from 'react'
 import type {NextPage} from 'next'
-import {Box, Container, Fab, Grid, Typography} from "@material-ui/core";
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import Box from "@material-ui/core/Box"
+import Fab from "@material-ui/core/Fab"
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
+import Container from "@material-ui/core/Container"
 import {Image} from "state";
 import {useState} from "react";
 import ImageItem from "@src/components/ImageItem";
 import {Add} from "@material-ui/icons";
-import {makeStyles} from "@material-ui/core";
 
-const useClasses = makeStyles((props) => {
+const useStyles = makeStyles((props) => {
   return {
     heading: {
       [props.breakpoints.up('md')]: {
@@ -41,11 +46,11 @@ const Home: NextPage = () => {
     imageDataGenerator('4', 'Hello', '', 0, 0),
   ])
 
-  const classes = useClasses()
+  const classes = useStyles()
 
   return (
     <Container>
-      <Box mb={3} className={classes.heading}>
+      <Box mb={3}  className={classes.heading}>
         <Typography variant="h4" style={{fontWeight: 'bold'}}>Dagallery</Typography>
       </Box>
       <Grid container spacing={2} className={classes.listImage}>
