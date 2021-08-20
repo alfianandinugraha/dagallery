@@ -1,10 +1,11 @@
+import React from 'react';
 import type { AppProps } from 'next/app'
-import {ThemeProvider} from "@material-ui/styles";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import overrideTheme from "@src/theme";
-import {useEffect} from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
+  React.useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles.parentElement?.removeChild(jssStyles);
@@ -12,9 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ThemeProvider theme={overrideTheme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+      <ThemeProvider theme={overrideTheme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
   )
 }
 

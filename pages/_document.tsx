@@ -1,29 +1,9 @@
+import React from "react";
 import Document, {DocumentContext, Head, Html, Main, NextScript} from "next/document";
-import {ServerStyleSheets} from "@material-ui/styles";
-import {AppType} from "next/dist/shared/lib/utils";
+import {ServerStyleSheets} from "@material-ui/core/styles";
+import {AppType} from "next/dist/next-server/lib/utils";
 
-class RootDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const sheets = new ServerStyleSheets()
-    const originalRenderPage = ctx.renderPage
-
-    ctx.renderPage = () => {
-      return originalRenderPage({
-        enhanceApp: (App: AppType) => {
-          return (props) => {
-            return sheets.collect(<App {...props}/>)
-          }
-        }
-      })
-    }
-
-    const initialProps = await Document.getInitialProps(ctx)
-    return {
-      ...initialProps,
-      styles: [sheets.getStyleElement()]
-    }
-  }
-
+export default class MyDocument extends Document {
   render() {
     return (
       <Html>
@@ -34,12 +14,31 @@ class RootDocument extends Document {
                 rel="stylesheet"/>
         </Head>
         <body>
-        <Main/>
-        <NextScript/>
+          <Main/>
+          <NextScript/>
         </body>
       </Html>
     )
   }
 }
 
-export default RootDocument
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const sheets = new ServerStyleSheets()
+  const originalRenderPage = ctx.renderPage
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App: AppType) => (props) => sheets.collect(<App {...props}/>)
+    })
+
+  const initialProps = await Document.getInitialProps(ctx)
+  return {
+    ...initialProps,
+    styles: (
+      <React.Fragment key="styles">
+        {initialProps.styles}
+        {sheets.getStyleElement()}
+      </React.Fragment>
+    )
+  }
+}
