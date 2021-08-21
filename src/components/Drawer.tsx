@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {Button, TextField} from "@material-ui/core";
+import {Button, CircularProgress, TextField} from "@material-ui/core";
 import FileDropzone from "@src/components/FileDropzone";
 import {Publish} from "@material-ui/icons";
 import MuiDrawer from "@material-ui/core/Drawer"
@@ -43,6 +43,7 @@ const Drawer = (props: DrawerProps) => {
   const [file, setFile] = useState<File|null>(null)
   const [base64, setBase64] = useState<string>("")
   const [isLoadingConvert, setIsLoadingConvert] = useState(false)
+  const [isLoadingRequest, setIsLoadingRequest] = useState(false)
   const classes = useStyles()
 
   const submitForm = () => {
@@ -54,6 +55,7 @@ const Drawer = (props: DrawerProps) => {
     formData.append("title", title)
     formData.append("fileName", fileName)
     formData.append("file", file)
+    setIsLoadingRequest(true)
     axios({
       method: 'POST',
       url: '/api/images',
@@ -63,6 +65,8 @@ const Drawer = (props: DrawerProps) => {
       }
     }).then((res) => {
       console.log(res)
+    }).finally(() => {
+      setIsLoadingRequest(false)
     })
   }
 
@@ -156,12 +160,17 @@ const Drawer = (props: DrawerProps) => {
       </Grid>
       <Grid item>
         <Button
-            startIcon={<Publish/>}
+            startIcon={isLoadingRequest ? null : <Publish/>}
             fullWidth
             color="primary"
             variant="contained"
-            onClick={submitForm}
-        >Upload</Button>
+            onClick={isLoadingRequest ? undefined : submitForm}
+            style={{
+              color: 'white'
+            }}
+        >
+          {isLoadingRequest ? (<CircularProgress color="inherit" size={24}/>) : 'Upload'}
+        </Button>
       </Grid>
     </Grid>
   </MuiDrawer>)
