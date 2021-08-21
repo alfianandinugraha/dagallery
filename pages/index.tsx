@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropsWithChildren} from 'react'
 import type {NextPage} from 'next'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Box from "@material-ui/core/Box"
@@ -11,6 +11,8 @@ import {useState} from "react";
 import ImageItem from "@src/components/ImageItem";
 import {Add, Publish} from "@material-ui/icons";
 import Drawer from "@src/components/Drawer";
+import axios from "axios";
+import {ApiResponseArray, ImageResponse} from "api";
 
 const useStyles = makeStyles((props) => {
   return {
@@ -63,7 +65,8 @@ const imageDataGenerator = (
   }
 }
 
-const Home: NextPage = () => {
+const Home: NextPage<ApiResponseArray<ImageResponse>> = (props) => {
+  console.log(props)
   const [images] = useState<Image[]>([
     imageDataGenerator('1', 'Hello', '', 0, 0),
     imageDataGenerator('2', 'Hello', '', 0, 0),
@@ -93,6 +96,26 @@ const Home: NextPage = () => {
       </nav>
     </Container>
   )
+}
+
+export const getServerSideProps = async () => {
+  let props = {}
+  try {
+    props = await axios.get<ApiResponseArray<ImageResponse>>('http://localhost:3000/api/images')
+      .then((res) => {
+        return res.data
+      })
+  } catch(err) {
+    console.log(err)
+    props = {
+      message: 'failed',
+      data: []
+    }
+  }
+
+  return {
+    props: props
+  }
 }
 
 export default Home
