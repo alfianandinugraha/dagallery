@@ -86,6 +86,26 @@ connect.post(async (req, res) => {
     res.status(400).json({message: 'failed'})
   }
 })
+connect.get(async (req, res) => {
+  try {
+    const firebaseResponse = await firebase
+      .firestore()
+      .collection('images')
+      .get()
+      .then((res) => {
+        return res.docs.map((doc) => doc.data())
+      })
+    return res.status(200).json({
+      message: "success",
+      data: firebaseResponse
+    })
+  } catch(err) {
+    return res.status(200).json({
+      message: "failed",
+      data: undefined
+    })
+  }
+})
 
 export const config = {
   api: {
