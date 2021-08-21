@@ -7,6 +7,7 @@ import {Publish} from "@material-ui/icons";
 import MuiDrawer from "@material-ui/core/Drawer"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {convertBase64} from "@src/helpers/base64";
+import axios from "axios";
 
 interface DrawerProps {
 }
@@ -49,7 +50,20 @@ const Drawer = (props: DrawerProps) => {
       alert('Please upload image')
       return
     }
-    console.log({title, fileName, file})
+    const formData = new FormData()
+    formData.append("title", title)
+    formData.append("fileName", fileName)
+    formData.append("file", file)
+    axios({
+      method: 'POST',
+      url: '/api/images',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((res) => {
+      console.log(res)
+    })
   }
 
   useEffect(() => {
