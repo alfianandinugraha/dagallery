@@ -65,7 +65,8 @@ connect.post(async (req, res) => {
       fileName: data.fileName,
       publicId: uploadResponse.public_id,
       version: uploadResponse.version,
-      format: uploadResponse.format
+      format: uploadResponse.format,
+      createdAt: new Date()
     }
     const firestoreResponse = await firebase
       .firestore()
@@ -91,10 +92,17 @@ connect.get(async (req, res) => {
     const firebaseResponse = await firebase
       .firestore()
       .collection('images')
+      .orderBy('createdAt', 'desc')
       .get()
       .then((res) => {
-        return res.docs.map((doc) => doc.data())
+        return res.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            createdAt: doc.data().createdAt.seconds * 1000
+          }
+        })
       })
+
     return res.status(200).json({
       message: "success",
       data: firebaseResponse
