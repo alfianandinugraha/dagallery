@@ -3,9 +3,11 @@ import {Image} from "state";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import Fab from "@material-ui/core/Fab";
+import {Delete} from "@material-ui/icons";
 
 interface ImageItemProps extends Image {
-  onClick?: (image: Image) => void
+  onDelete?: (image: Image) => void
 }
 
 const useClasses = makeStyles((props) => {
@@ -59,12 +61,21 @@ const ImageItem = (props: ImageItemProps) => {
       xs={6}
       sm={4}
       className={classes.grid}
-      onClick={() => {
-        const newProps = {...props}
-        delete newProps.onClick
-        props.onClick && props.onClick(newProps)
-      }}
     >
+      <Fab
+        size={"small"}
+        color="secondary"
+        onClick={() => {
+          const newProps = {...props}
+          delete newProps.onDelete
+          props.onDelete && props.onDelete(newProps)
+        }}
+        style={{
+          position: 'absolute',
+          right: 16,
+          top: 16
+        }}
+      ><Delete fontSize="small"/></Fab>
       <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
         <Typography color="inherit">{props.title}</Typography>

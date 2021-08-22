@@ -71,7 +71,7 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
       <Grid container spacing={2} className={classes.listImage}>
         {images.map((image) => {
           return (
-            <ImageItem {...image} key={image.id} onClick={(payload) => {
+            <ImageItem {...image} key={image.id} onDelete={(payload) => {
               console.log(payload)
             }}/>
           )
