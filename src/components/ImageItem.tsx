@@ -35,12 +35,12 @@ const useClasses = makeStyles((props) => {
       left: 0,
       width: 'calc(100% - 16px)',
       display: 'flex',
+      flexDirection: 'column',
       backgroundImage: 'linear-gradient(180deg, rgba(34, 34, 34, 0) 0%, #222222 100%)',
-      height: 46,
+      height: 54,
       borderRadius: '0 0 6px 6px',
       margin: 8,
       color: 'white',
-      alignItems: 'center',
 
       '& p': {
         marginLeft: 16,
@@ -48,6 +48,9 @@ const useClasses = makeStyles((props) => {
         [props.breakpoints.up('md')]: {
           fontSize: 16,
         }
+      },
+      '& span': {
+        marginLeft: 16,
       }
     }
   }
@@ -99,6 +102,9 @@ const ImageItem = (props: ImageItemProps) => {
       <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
         <Typography color="inherit">{props.title}</Typography>
+        <Typography color="inherit" variant="caption">
+          {props.fileName.length > 30 ? `${props.fileName.slice(0, 30)}...` : props.fileName}
+        </Typography>
       </div>
     </Grid>
   )
