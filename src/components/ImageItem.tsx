@@ -53,9 +53,9 @@ const ImageItem = (props: ImageItemProps) => {
 
   return (
     <Grid item key={props.id} xs={6} sm={4} className={classes.grid}>
-      <img src={props.fileName} alt={props.name} className={classes.img}/>
+      <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
-        <Typography color="inherit">{props.name}</Typography>
+        <Typography color="inherit">{props.title}</Typography>
       </div>
     </Grid>
   )

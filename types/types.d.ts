@@ -1,9 +1,9 @@
 declare module 'state' {
   export interface Image {
     id: string
-    name: string
+    title: string
     fileName: string
+    url: string
     createdAt: number
-    updatedAt: number
   }
 }

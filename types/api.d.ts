@@ -6,6 +6,7 @@ declare module 'api' {
     createdAt: number
     version: number
     title: string
+    id: string
   }
 
   export interface Response {
