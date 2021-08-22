@@ -75,6 +75,10 @@ const Drawer = (props: DrawerProps) => {
         url: `https://res.cloudinary.com/alfianandinugraha/image/upload/v${data.version}/${data.publicId}.${data.format}`
       }
       setImages([newImage, ...images])
+      setTitle("")
+      setFileName("")
+      setFile(null)
+      setBase64("")
     }).finally(() => {
       setIsLoadingRequest(false)
     })
@@ -113,6 +117,7 @@ const Drawer = (props: DrawerProps) => {
           variant="filled"
           value={title}
           className={classes.textFieldRoot}
+          disabled={isLoadingRequest}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setTitle(e.target.value)
           }}
@@ -126,6 +131,7 @@ const Drawer = (props: DrawerProps) => {
           variant="filled"
           value={fileName}
           className={classes.textFieldRoot}
+          disabled={isLoadingRequest}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setFileName(e.target.value)
           }}
