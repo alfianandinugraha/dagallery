@@ -13,8 +13,13 @@ const remove = async (path: string) => {
   return await cloudinaryBase.uploader.destroy(path)
 }
 
+const upload = async (path: string) => {
+  return await cloudinaryBase.uploader.upload(path)
+}
+
 const cloudinary = {
-  remove
+  remove,
+  upload
 }
 
 export default cloudinary
