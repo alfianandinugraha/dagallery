@@ -1,4 +1,4 @@
-import React, {HTMLAttributes} from 'react'
+import React, {HTMLAttributes, useState} from 'react'
 import {Image} from "state";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from "@material-ui/core/Grid"
@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography"
 import Fab from "@material-ui/core/Fab";
 import {Delete} from "@material-ui/icons";
 import axios from "axios";
+import {CircularProgress} from "@material-ui/core";
 
 interface ImageItemProps extends Image {
   onDelete?: (image: Image) => void
@@ -53,10 +54,12 @@ const useClasses = makeStyles((props) => {
 })
 
 const ImageItem = (props: ImageItemProps) => {
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
   const classes = useClasses()
 
   const deleteImageHandler = async () => {
     try {
+      setIsLoadingDelete(true)
       await axios({
         method: 'DELETE',
         url: `/api/images/${props.id}`
@@ -66,6 +69,7 @@ const ImageItem = (props: ImageItemProps) => {
       props.onDelete && props.onDelete(newProps)
     } catch (err) {
       console.log(err)
+      setIsLoadingDelete(false)
     }
   }
 
@@ -80,13 +84,18 @@ const ImageItem = (props: ImageItemProps) => {
       <Fab
         size={"small"}
         color="secondary"
-        onClick={deleteImageHandler}
+        onClick={isLoadingDelete ? undefined : deleteImageHandler}
         style={{
           position: 'absolute',
           right: 16,
-          top: 16
+          top: 16,
+          color: 'white'
         }}
-      ><Delete fontSize="small"/></Fab>
+      >
+        {
+          isLoadingDelete ? (<CircularProgress size={20} color="inherit"/>) : (<Delete fontSize="small"/>)
+        }
+      </Fab>
       <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
         <Typography color="inherit">{props.title}</Typography>
