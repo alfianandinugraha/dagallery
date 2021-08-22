@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {Button, CircularProgress, TextField} from "@material-ui/core";
@@ -7,7 +7,11 @@ import {Publish} from "@material-ui/icons";
 import MuiDrawer from "@material-ui/core/Drawer"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {convertBase64} from "@src/helpers/base64";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
+import {ApiResponse, ImageResponse} from "api";
+import {useAtom} from "jotai";
+import {imageStore} from "@src/store/imageStore";
+import {Image} from "state";
 
 interface DrawerProps {
 }
@@ -44,6 +48,7 @@ const Drawer = (props: DrawerProps) => {
   const [base64, setBase64] = useState<string>("")
   const [isLoadingConvert, setIsLoadingConvert] = useState(false)
   const [isLoadingRequest, setIsLoadingRequest] = useState(false)
+  const [images, setImages] = useAtom(imageStore)
   const classes = useStyles()
 
   const submitForm = () => {
@@ -63,8 +68,13 @@ const Drawer = (props: DrawerProps) => {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    }).then((res) => {
-      console.log(res)
+    }).then((res: AxiosResponse<ApiResponse<ImageResponse>>) => {
+      const { data } = res.data
+      const newImage: Image = {
+        ...data,
+        url: `https://res.cloudinary.com/alfianandinugraha/image/upload/v${data.version}/${data.publicId}.${data.format}`
+      }
+      setImages([newImage, ...images])
     }).finally(() => {
       setIsLoadingRequest(false)
     })
