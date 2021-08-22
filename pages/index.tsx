@@ -53,28 +53,9 @@ const useStyles = makeStyles((props) => {
   }
 })
 
-const imageDataGenerator = (
-  id: string, name: string, fileName: string, createdAt: number, updatedAt: number
-): Image => {
-  return {
-    id,
-    name,
-    fileName: 'https://images.unsplash.com/photo-1629220608817-0802c373e110?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80',
-    createdAt,
-    updatedAt
-  }
-}
-
-const Home: NextPage<ApiResponseArray<ImageResponse>> = (props) => {
-  console.log(props)
-  const [images] = useState<Image[]>([
-    imageDataGenerator('1', 'Hello', '', 0, 0),
-    imageDataGenerator('2', 'Hello', '', 0, 0),
-    imageDataGenerator('3', 'Hello', '', 0, 0),
-    imageDataGenerator('4', 'Hello', '', 0, 0),
-  ])
-
+const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
+  const [images] = useState<Image[]>(props.data)
 
   return (
     <Container>
@@ -101,10 +82,19 @@ const Home: NextPage<ApiResponseArray<ImageResponse>> = (props) => {
 export const getServerSideProps = async () => {
   let props = {}
   try {
-    props = await axios.get<ApiResponseArray<ImageResponse>>('http://localhost:3000/api/images')
+    const response = await axios.get<ApiResponseArray<ImageResponse>>('http://localhost:3000/api/images')
       .then((res) => {
         return res.data
       })
+    props = {
+      message: response.message,
+      data: response.data.map((image) => {
+        return {
+          ...image,
+          url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v${image.version}/${image.publicId}.${image.format}`,
+        }
+      })
+    }
   } catch(err) {
     console.log(err)
     props = {

@@ -98,7 +98,8 @@ connect.get(async (req, res) => {
         return res.docs.map((doc) => {
           return {
             ...doc.data(),
-            createdAt: doc.data().createdAt.seconds * 1000
+            createdAt: doc.data().createdAt.seconds * 1000,
+            id: doc.id
           }
         })
       })
