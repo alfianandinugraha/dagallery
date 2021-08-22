@@ -16,4 +16,8 @@ declare module 'api' {
   export interface ApiResponseArray<T> extends Response {
     data: T[]
   }
+
+  export interface ApiResponse<T> extends Response {
+    data: T
+  }
 }
