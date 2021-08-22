@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Fab from "@material-ui/core/Fab";
 import {Delete} from "@material-ui/icons";
+import axios from "axios";
 
 interface ImageItemProps extends Image {
   onDelete?: (image: Image) => void
@@ -54,6 +55,20 @@ const useClasses = makeStyles((props) => {
 const ImageItem = (props: ImageItemProps) => {
   const classes = useClasses()
 
+  const deleteImageHandler = async () => {
+    try {
+      await axios({
+        method: 'DELETE',
+        url: `/api/images/${props.id}`
+      })
+      const newProps = {...props}
+      delete newProps.onDelete
+      props.onDelete && props.onDelete(newProps)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Grid
       item
@@ -65,11 +80,7 @@ const ImageItem = (props: ImageItemProps) => {
       <Fab
         size={"small"}
         color="secondary"
-        onClick={() => {
-          const newProps = {...props}
-          delete newProps.onDelete
-          props.onDelete && props.onDelete(newProps)
-        }}
+        onClick={deleteImageHandler}
         style={{
           position: 'absolute',
           right: 16,

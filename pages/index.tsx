@@ -59,19 +59,6 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
   const [images, setImages] = useAtom(imageStore)
 
-  const deleteImageHandler = async (image: Image) => {
-    try {
-      const result = await axios({
-        method: 'DELETE',
-        url: `/api/images/${image.id}`
-      })
-      const newImages = images.filter((item) => item.id !== image.id)
-      setImages(newImages)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   useEffect(() => {
     setImages(props.data)
   }, [props.data, setImages])
@@ -84,7 +71,14 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
       <Grid container spacing={2} className={classes.listImage}>
         {images.map((image) => {
           return (
-            <ImageItem {...image} key={image.id} onDelete={deleteImageHandler}/>
+            <ImageItem
+              {...image}
+              key={image.id}
+              onDelete={(image: Image) => {
+              const newImages = images.filter((item) => item.id !== image.id)
+                setImages(newImages)
+              }}
+            />
           )
         })}
       </Grid>
