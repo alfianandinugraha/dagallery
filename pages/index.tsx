@@ -1,4 +1,4 @@
-import React, {PropsWithChildren} from 'react'
+import React, {PropsWithChildren, useEffect} from 'react'
 import type {NextPage} from 'next'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Box from "@material-ui/core/Box"
@@ -13,6 +13,8 @@ import {Add, Publish} from "@material-ui/icons";
 import Drawer from "@src/components/Drawer";
 import axios from "axios";
 import {ApiResponseArray, ImageResponse} from "api";
+import {useAtom} from "jotai";
+import {imageStore} from "@src/store/imageStore";
 
 const useStyles = makeStyles((props) => {
   return {
@@ -55,7 +57,11 @@ const useStyles = makeStyles((props) => {
 
 const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
-  const [images] = useState<Image[]>(props.data)
+  const [images, setImages] = useAtom(imageStore)
+
+  useEffect(() => {
+    setImages(props.data)
+  }, [props.data, setImages])
 
   return (
     <Container>
