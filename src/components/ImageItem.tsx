@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {HTMLAttributes} from 'react'
 import {Image} from "state";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 
 interface ImageItemProps extends Image {
+  onClick?: (image: Image) => void
 }
 
 const useClasses = makeStyles((props) => {
@@ -52,7 +53,18 @@ const ImageItem = (props: ImageItemProps) => {
   const classes = useClasses()
 
   return (
-    <Grid item key={props.id} xs={6} sm={4} className={classes.grid}>
+    <Grid
+      item
+      key={props.id}
+      xs={6}
+      sm={4}
+      className={classes.grid}
+      onClick={() => {
+        const newProps = {...props}
+        delete newProps.onClick
+        props.onClick && props.onClick(newProps)
+      }}
+    >
       <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
         <Typography color="inherit">{props.title}</Typography>

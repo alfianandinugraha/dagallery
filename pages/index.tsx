@@ -71,7 +71,9 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
       <Grid container spacing={2} className={classes.listImage}>
         {images.map((image) => {
           return (
-            <ImageItem {...image} key={image.id}/>
+            <ImageItem {...image} key={image.id} onClick={(payload) => {
+              console.log(payload)
+            }}/>
           )
         })}
       </Grid>
