@@ -15,6 +15,7 @@ import axios from "axios";
 import {ApiResponseArray, ImageResponse} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
+import {TextField} from "@material-ui/core";
 
 const useStyles = makeStyles((props) => {
   return {
@@ -78,22 +79,37 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
       <Box mb={3} className={classes.heading}>
         <Typography variant="h4" style={{fontWeight: 'bold'}}>Dagallery</Typography>
       </Box>
-      <Grid container spacing={2} className={classes.listImage} style={{marginTop: hasImages ? 24 : 0}}>
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        className={classes.listImage}
+        style={{marginTop: hasImages ? 24 : 0}}
+      >
         {!hasImages && (
           <Typography variant="h4" className={classes.emptyState}>No Images Found</Typography>
         )}
-        {images.map((image) => {
-          return (
-            <ImageItem
-              {...image}
-              key={image.id}
-              onDelete={(image: Image) => {
-              const newImages = images.filter((item) => item.id !== image.id)
-                setImages(newImages)
-              }}
-            />
-          )
-        })}
+        {hasImages && (
+          <Grid item>
+            <TextField label="Search by title"/>
+          </Grid>
+        )}
+        <Grid item>
+          <Grid container spacing={2}>
+            {images.map((image) => {
+              return (
+                <ImageItem
+                  {...image}
+                  key={image.id}
+                  onDelete={(image: Image) => {
+                  const newImages = images.filter((item) => item.id !== image.id)
+                    setImages(newImages)
+                  }}
+                />
+              )
+            })}
+          </Grid>
+        </Grid>
       </Grid>
       <Fab color="primary" aria-label="add" style={{position: 'fixed', bottom: 24, right: 24}}>
         <Add/>
