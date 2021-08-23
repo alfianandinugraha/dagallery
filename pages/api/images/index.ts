@@ -4,7 +4,7 @@ import formidable from 'formidable'
 import nextConnect from 'next-connect'
 import {getSingleArrayItem} from "@utils/array";
 import cloudinary from "@server/services/Cloudinary";
-import firebase from "firebase";
+import firebase from "@server/services/Firebase";
 
 interface FormBodyPayload {
   title: string
