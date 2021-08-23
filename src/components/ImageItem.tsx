@@ -81,6 +81,22 @@ const ImageItem = (props: ImageItemProps) => {
     }
   }
 
+  const downloadImage = async () => {
+    try {
+      const res = await axios
+        .get(props.url, {responseType: "arraybuffer"})
+        .then((response) => {
+          return Buffer.from(response.data, 'binary').toString('base64')
+        })
+      const anchor = document.createElement("a")
+      anchor.download = props.fileName
+      anchor.setAttribute('href', res)
+      anchor.click()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Grid
       item
@@ -104,7 +120,12 @@ const ImageItem = (props: ImageItemProps) => {
           isLoadingDelete ? (<CircularProgress size={20} color="inherit"/>) : (<Delete fontSize="small"/>)
         }
       </Fab>
-      <Button variant="contained" color="primary" className={classes.buttonDownload}>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.buttonDownload}
+        onClick={downloadImage}
+      >
         <CloudDownload fontSize="small" style={{marginRight: 8}}/>
         <Typography variant="caption">
           Download
