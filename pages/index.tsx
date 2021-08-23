@@ -24,6 +24,8 @@ const useStyles = makeStyles((props) => {
       }
     },
     listImage: {
+      position: 'relative',
+      minHeight: '100vh',
       [props.breakpoints.up('md')]: {
         marginTop: 24,
         width: 888
@@ -51,6 +53,12 @@ const useStyles = makeStyles((props) => {
       '& .MuiFilledInput-root': {
         backgroundColor: '#F6F6F6',
       }
+    },
+    emptyState: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
     }
   }
 })
@@ -58,6 +66,8 @@ const useStyles = makeStyles((props) => {
 const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
   const [images, setImages] = useAtom(imageStore)
+
+  const hasImages = !!images.length
 
   useEffect(() => {
     setImages(props.data)
@@ -68,7 +78,10 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
       <Box mb={3} className={classes.heading}>
         <Typography variant="h4" style={{fontWeight: 'bold'}}>Dagallery</Typography>
       </Box>
-      <Grid container spacing={2} className={classes.listImage}>
+      <Grid container spacing={2} className={classes.listImage} style={{marginTop: hasImages ? 24 : 0}}>
+        {!hasImages && (
+          <Typography variant="h4" className={classes.emptyState}>No Images Found</Typography>
+        )}
         {images.map((image) => {
           return (
             <ImageItem
