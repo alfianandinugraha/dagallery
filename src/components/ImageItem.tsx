@@ -4,9 +4,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Fab from "@material-ui/core/Fab";
-import {Delete} from "@material-ui/icons";
+import {CloudDownload, Delete} from "@material-ui/icons";
 import axios from "axios";
-import {CircularProgress} from "@material-ui/core";
+import {Button, CircularProgress} from "@material-ui/core";
 
 interface ImageItemProps extends Image {
   onDelete?: (image: Image) => void
@@ -52,6 +52,11 @@ const useClasses = makeStyles((props) => {
       '& span': {
         marginLeft: 16,
       }
+    },
+    buttonDownload: {
+      position: 'absolute',
+      top: 16,
+      left: 16
     }
   }
 })
@@ -99,6 +104,12 @@ const ImageItem = (props: ImageItemProps) => {
           isLoadingDelete ? (<CircularProgress size={20} color="inherit"/>) : (<Delete fontSize="small"/>)
         }
       </Fab>
+      <Button variant="contained" color="primary" className={classes.buttonDownload}>
+        <CloudDownload fontSize="small" style={{marginRight: 8}}/>
+        <Typography variant="caption">
+          Download
+        </Typography>
+      </Button>
       <img src={props.url} alt={props.title} className={classes.img}/>
       <div className={classes.background}>
         <Typography color="inherit">{props.title}</Typography>
