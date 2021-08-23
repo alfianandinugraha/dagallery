@@ -16,6 +16,7 @@ import {ApiResponseArray, ImageResponse} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
 import {TextField} from "@material-ui/core";
+import debounce from "@src/helpers/debounce";
 
 const useStyles = makeStyles((props) => {
   return {
@@ -64,12 +65,24 @@ const useStyles = makeStyles((props) => {
   }
 })
 
+const debounceSearchInput = debounce<() => void>((param) => {
+  param()
+}, 500)
+
 const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
   const [imagesStore, setImagesStore] = useAtom(imageStore)
+  const [search, setSearch] = useState("")
   const [images, setImages] = useState<Image[]>(props.data)
 
   const hasImages = !!imagesStore.length
+
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+    debounceSearchInput(() => {
+      console.log("fetching !")
+    })
+  }
 
   useEffect(() => {
     setImagesStore(props.data)
@@ -96,7 +109,12 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
         )}
         {hasImages && (
           <Grid item>
-            <TextField label="Search by title"/>
+            <TextField
+              label="Search by title"
+              type="search"
+              value={search}
+              onChange={searchHandler}
+            />
           </Grid>
         )}
         <Grid item>
