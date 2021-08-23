@@ -66,13 +66,18 @@ const useStyles = makeStyles((props) => {
 
 const Home: NextPage<ApiResponseArray<Image>> = (props) => {
   const classes = useStyles()
-  const [images, setImages] = useAtom(imageStore)
+  const [imagesStore, setImagesStore] = useAtom(imageStore)
+  const [images, setImages] = useState<Image[]>(props.data)
 
-  const hasImages = !!images.length
+  const hasImages = !!imagesStore.length
 
   useEffect(() => {
-    setImages(props.data)
-  }, [props.data, setImages])
+    setImagesStore(props.data)
+  }, [props.data, setImagesStore])
+
+  useEffect(() => {
+    setImages(imagesStore)
+  }, [imagesStore])
 
   return (
     <Container>
@@ -102,8 +107,8 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
                   {...image}
                   key={image.id}
                   onDelete={(image: Image) => {
-                  const newImages = images.filter((item) => item.id !== image.id)
-                    setImages(newImages)
+                  const newImages = imagesStore.filter((item) => item.id !== image.id)
+                    setImagesStore(newImages)
                   }}
                 />
               )
