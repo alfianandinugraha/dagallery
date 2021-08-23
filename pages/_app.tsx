@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import overrideTheme from "@src/theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import '../styles/reset.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
