@@ -147,7 +147,7 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
 export const getServerSideProps = async () => {
   let props = {}
   try {
-    const response = await axios.get<ApiResponseArray<ImageFirebase>>('http://localhost:3000/api/images')
+    const response = await axios.get<ApiResponse<ImageFirebase[]>>('http://localhost:3000/api/images')
       .then((res) => {
         return res.data
       })
