@@ -153,12 +153,7 @@ export const getServerSideProps = async () => {
       })
     props = {
       message: response.message,
-      data: response.data.map((image) => {
-        return {
-          ...image,
-          url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v${image.version}/${image.publicId}.${image.format}`,
-        }
-      })
+      data: response.data
     }
   } catch(err) {
     console.log(err)

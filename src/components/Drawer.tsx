@@ -68,13 +68,9 @@ const Drawer = (props: DrawerProps) => {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    }).then((res: AxiosResponse<ApiResponse<ImageFirebase>>) => {
+    }).then((res: AxiosResponse<ApiResponse<Image>>) => {
       const { data } = res.data
-      const newImage: Image = {
-        ...data,
-        url: `https://res.cloudinary.com/alfianandinugraha/image/upload/v${data.version}/${data.publicId}.${data.format}`
-      }
-      setImages([newImage, ...images])
+      setImages([data, ...images])
       setTitle("")
       setFileName("")
       setFile(null)
