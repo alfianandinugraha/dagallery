@@ -8,7 +8,7 @@ import MuiDrawer from "@material-ui/core/Drawer"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {convertBase64} from "@src/helpers/base64";
 import axios, {AxiosResponse} from "axios";
-import {ApiResponse, ImageResponse} from "api";
+import {ApiResponse, ImageFirebase} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
 import {Image} from "state";
@@ -68,7 +68,7 @@ const Drawer = (props: DrawerProps) => {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    }).then((res: AxiosResponse<ApiResponse<ImageResponse>>) => {
+    }).then((res: AxiosResponse<ApiResponse<ImageFirebase>>) => {
       const { data } = res.data
       const newImage: Image = {
         ...data,

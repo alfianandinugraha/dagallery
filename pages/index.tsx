@@ -12,7 +12,7 @@ import ImageItem from "@src/components/ImageItem";
 import {Add, Publish} from "@material-ui/icons";
 import Drawer from "@src/components/Drawer";
 import axios from "axios";
-import {ApiResponseArray, ImageResponse} from "api";
+import {ApiResponseArray, ImageFirebase} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
 import {TextField} from "@material-ui/core";
@@ -147,7 +147,7 @@ const Home: NextPage<ApiResponseArray<Image>> = (props) => {
 export const getServerSideProps = async () => {
   let props = {}
   try {
-    const response = await axios.get<ApiResponseArray<ImageResponse>>('http://localhost:3000/api/images')
+    const response = await axios.get<ApiResponseArray<ImageFirebase>>('http://localhost:3000/api/images')
       .then((res) => {
         return res.data
       })

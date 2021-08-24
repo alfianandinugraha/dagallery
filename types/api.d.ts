@@ -1,5 +1,5 @@
 declare module 'api' {
-  export interface ImageResponse {
+  export interface ImageFirebase {
     fileName: string
     publicId: string
     format: string
