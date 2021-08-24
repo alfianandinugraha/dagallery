@@ -12,7 +12,7 @@ import ImageItem from "@src/components/ImageItem";
 import {Add, Publish} from "@material-ui/icons";
 import Drawer from "@src/components/Drawer";
 import axios from "axios";
-import {ApiResponseArray, ImageFirebase} from "api";
+import {ApiResponse, ImageFirebase} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
 import {TextField} from "@material-ui/core";
@@ -69,7 +69,7 @@ const debounceSearchInput = debounce<() => void>((param) => {
   param()
 }, 500)
 
-const Home: NextPage<ApiResponseArray<Image>> = (props) => {
+const Home: NextPage<ApiResponse<Image[]>> = (props) => {
   const classes = useStyles()
   const [imagesStore, setImagesStore] = useAtom(imageStore)
   const [search, setSearch] = useState("")
