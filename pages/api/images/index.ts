@@ -5,6 +5,8 @@ import nextConnect from 'next-connect'
 import {getSingleArrayItem} from "@utils/array";
 import cloudinary from "@server/services/Cloudinary";
 import firebase from "@server/services/Firebase";
+import {ImageFirebase} from "api";
+import {Image} from "state";
 
 interface FormBodyPayload {
   title: string
@@ -71,11 +73,14 @@ connect.get(async (req, res) => {
       .get()
       .then((res) => {
         return res.docs.map((doc) => {
-          return {
-            ...doc.data(),
+          const data: ImageFirebase = doc.data() as ImageFirebase
+          const newItem: Image = {
+            ...data,
             createdAt: doc.data().createdAt.seconds * 1000,
-            id: doc.id
+            id: doc.id,
+            url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v${data.version}/${data.publicId}.${data.format}`
           }
+          return newItem
         })
       })
 
