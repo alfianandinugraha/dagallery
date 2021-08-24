@@ -79,8 +79,18 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
-    debounceSearchInput(() => {
-      console.log("fetching !")
+    debounceSearchInput(async () => {
+      const queryParam = {
+        q: e.target.value
+      }
+      const responseSearch = await axios
+        .get<ApiResponse<Image[]>>('/api/images', {
+          params: queryParam
+        })
+        .then((res) => {
+          return res.data.data
+        })
+      setImages(responseSearch)
     })
   }
 

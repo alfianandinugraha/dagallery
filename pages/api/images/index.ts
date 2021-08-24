@@ -68,8 +68,11 @@ connect.post(async (req, res) => {
   }
 })
 connect.get(async (req, res) => {
+  const searchKeyword = getSingleArrayItem(req.query.q)
+
   try {
-    const firebaseResponse = await firebase
+    let response: Image[] = []
+    response = await firebase
       .firestore()
       .collection('images')
       .orderBy('createdAt', 'desc')
@@ -87,9 +90,15 @@ connect.get(async (req, res) => {
         })
       })
 
+    if (searchKeyword) {
+      response = response.filter((item) => {
+        return item.title.includes(searchKeyword)
+      })
+    }
+
     return res.status(200).json({
       message: "success",
-      data: firebaseResponse
+      data: response
     })
   } catch(err) {
     return res.status(200).json({
