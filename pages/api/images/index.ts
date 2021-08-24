@@ -49,15 +49,18 @@ connect.post(async (req, res) => {
       .firestore()
       .collection('images')
       .add(firestorePayload)
+    const response: Image = {
+      ...firestorePayload,
+      id: firestoreResponse.id,
+      createdAt: firestorePayload.createdAt.getTime(),
+      url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v${firestorePayload.version}/${firestorePayload.publicId}.${firestorePayload.format}`
+    }
 
     return res
       .status(200)
       .json({
         message: 'success',
-        data: {
-          id: firestoreResponse.id,
-          ...firestorePayload
-        }
+        data: response
       })
   } catch (err) {
     console.log(err)
