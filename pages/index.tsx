@@ -76,7 +76,7 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
   const [isLoadingSearch, setIsLoadingSearch] = useState(false)
   const [images, setImages] = useState<Image[]>(props.data)
 
-  const hasImages = !!imagesStore.length
+  const hasImages = !!images.length
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
