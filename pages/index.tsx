@@ -117,16 +117,26 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
         className={classes.listImage}
         style={{marginTop: hasImages ? 24 : 0}}
       >
-        {!hasImages && (
+        {(!hasImages && !isLoadingSearch) && (
           <Typography variant="h4" className={classes.emptyState}>No Images Found</Typography>
         )}
         {isLoadingSearch && (
-          <Grid container direction="column" justifyContent="center" className={classes.emptyState}>
-            <CircularProgress />
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            className={classes.emptyState}
+          >
+            <CircularProgress
+              style={{
+                marginBottom: '1rem'
+              }}
+            />
             <Typography>Loading data</Typography>
           </Grid>
         )}
-        {hasImages && (
+        {(imagesStore.length || search) && (
           <Grid item>
             <TextField
               label="Search by title"
