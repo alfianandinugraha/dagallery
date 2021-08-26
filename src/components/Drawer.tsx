@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {Button, CircularProgress, TextField} from "@material-ui/core";
+import {Button, CircularProgress, TextField, makeStyles} from "@material-ui/core";
 import FileDropzone from "@src/components/FileDropzone";
 import {Publish} from "@material-ui/icons";
 import MuiDrawer from "@material-ui/core/Drawer"
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {convertBase64} from "@src/helpers/base64";
 import axios, {AxiosResponse} from "axios";
 import {ApiResponse, ImageFirebase} from "api";
@@ -37,10 +36,14 @@ const useStyles = makeStyles((props) => {
       '& .MuiFilledInput-root': {
         backgroundColor: '#F6F6F6',
       }
+    },
+    error: {
+      color: props.palette.secondary.main,
     }
   }
 })
 
+const supportedFile = "image/"
 const Drawer = (props: DrawerProps) => {
   const [title, setTitle] = useState("")
   const [fileName, setFileName] = useState("")
@@ -48,6 +51,7 @@ const Drawer = (props: DrawerProps) => {
   const [base64, setBase64] = useState<string>("")
   const [isLoadingConvert, setIsLoadingConvert] = useState(false)
   const [isLoadingRequest, setIsLoadingRequest] = useState(false)
+  const [isSupportedFileFormat, setIsSupportedFileFormat] = useState(true)
   const [isDragActive, setIsDragActive] = useState(false)
   const [images, setImages] = useAtom(imageStore)
   const classes = useStyles()
@@ -137,6 +141,7 @@ const Drawer = (props: DrawerProps) => {
       <Grid item>
         <input
           type="file"
+          accept="image/*"
           id="input-image"
           style={{
             visibility: 'hidden',
@@ -166,10 +171,16 @@ const Drawer = (props: DrawerProps) => {
           }}
           onDrop={(e) => {
             e.preventDefault()
+            setIsDragActive(false)
             const { files } = e.dataTransfer
+            const isSupport = files[0].type.startsWith(supportedFile)
+            if (!isSupport) {
+              setIsSupportedFileFormat(false)
+              return
+            }
+            setIsSupportedFileFormat(true)
             setFile(files[0])
             setIsLoadingConvert(true)
-            setIsDragActive(false)
           }}
         >
           <FileDropzone
@@ -178,6 +189,14 @@ const Drawer = (props: DrawerProps) => {
             isLoading={isLoadingConvert}
           />
         </label>
+        {!isSupportedFileFormat && (
+          <Typography
+            variant="caption"
+            className={classes.error}
+          >
+            Format file not supported, please upload PNG, JPG, JPEG, or SVG
+          </Typography>
+        )}
       </Grid>
       <Grid item>
         <Button
