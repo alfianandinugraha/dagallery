@@ -15,7 +15,7 @@ import axios from "axios";
 import {ApiResponse, ImageFirebase} from "api";
 import {useAtom} from "jotai";
 import {imageStore} from "@src/store/imageStore";
-import {TextField} from "@material-ui/core";
+import {CircularProgress, TextField} from "@material-ui/core";
 import debounce from "@src/helpers/debounce";
 
 const useStyles = makeStyles((props) => {
@@ -73,12 +73,14 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
   const classes = useStyles()
   const [imagesStore, setImagesStore] = useAtom(imageStore)
   const [search, setSearch] = useState("")
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false)
   const [images, setImages] = useState<Image[]>(props.data)
 
   const hasImages = !!imagesStore.length
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
+    setIsLoadingSearch(true)
     debounceSearchInput(async () => {
       const queryParam = {
         q: e.target.value
@@ -90,6 +92,7 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
         .then((res) => {
           return res.data.data
         })
+      setIsLoadingSearch(false)
       setImages(responseSearch)
     })
   }
@@ -117,6 +120,12 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
         {!hasImages && (
           <Typography variant="h4" className={classes.emptyState}>No Images Found</Typography>
         )}
+        {isLoadingSearch && (
+          <Grid container direction="column" justifyContent="center" className={classes.emptyState}>
+            <CircularProgress />
+            <Typography>Loading data</Typography>
+          </Grid>
+        )}
         {hasImages && (
           <Grid item>
             <TextField
@@ -127,22 +136,24 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
             />
           </Grid>
         )}
-        <Grid item>
-          <Grid container spacing={2}>
-            {images.map((image) => {
-              return (
-                <ImageItem
-                  {...image}
-                  key={image.id}
-                  onDelete={(image: Image) => {
-                  const newImages = imagesStore.filter((item) => item.id !== image.id)
-                    setImagesStore(newImages)
-                  }}
-                />
-              )
-            })}
+        {!isLoadingSearch && (
+          <Grid item>
+            <Grid container spacing={2}>
+              {images.map((image) => {
+                return (
+                  <ImageItem
+                    {...image}
+                    key={image.id}
+                    onDelete={(image: Image) => {
+                    const newImages = imagesStore.filter((item) => item.id !== image.id)
+                      setImagesStore(newImages)
+                    }}
+                  />
+                )
+              })}
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
       <Fab color="primary" aria-label="add" style={{position: 'fixed', bottom: 24, right: 24}}>
         <Add/>
