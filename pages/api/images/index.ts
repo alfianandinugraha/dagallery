@@ -92,7 +92,7 @@ connect.get(async (req, res) => {
 
     if (searchKeyword) {
       response = response.filter((item) => {
-        return item.title.includes(searchKeyword)
+        return item.title.toLowerCase().includes(searchKeyword.toLowerCase())
       })
     }
 
