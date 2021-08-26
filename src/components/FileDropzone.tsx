@@ -3,10 +3,12 @@ import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import {CircularProgress} from "@material-ui/core";
+import clsx from "clsx";
 
 interface FileDropzoneProps {
   base64?: string
   isLoading?: boolean
+  isActive?: boolean
 }
 
 const useStyles = makeStyles((props) => {
@@ -23,7 +25,14 @@ const useStyles = makeStyles((props) => {
         width: '100%',
         height: '100%',
         borderRadius: 4
+      },
+      '& *': {
+        pointerEvents: 'none'
       }
+    },
+    active: {
+      backgroundColor: "#5d75c3",
+      color: 'white'
     }
   }
 })
@@ -32,7 +41,12 @@ const FileDropzone = (props: FileDropzoneProps) => {
   const classes = useStyles()
 
   return (
-    <Grid container className={classes.root} justifyContent="center" alignItems="center">
+    <Grid
+      container
+      className={clsx(classes.root, props.isActive ? classes.active : null)}
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid
         item
         style={{

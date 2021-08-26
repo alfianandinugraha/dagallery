@@ -48,6 +48,7 @@ const Drawer = (props: DrawerProps) => {
   const [base64, setBase64] = useState<string>("")
   const [isLoadingConvert, setIsLoadingConvert] = useState(false)
   const [isLoadingRequest, setIsLoadingRequest] = useState(false)
+  const [isDragActive, setIsDragActive] = useState(false)
   const [images, setImages] = useAtom(imageStore)
   const classes = useStyles()
 
@@ -156,15 +157,23 @@ const Drawer = (props: DrawerProps) => {
           onDragOver={(e) => {
             e.stopPropagation()
             e.preventDefault()
+            setIsDragActive(true)
+          }}
+          onDragLeave={(e) => {
+            e.stopPropagation()
+            console.log(e)
+            setIsDragActive(false)
           }}
           onDrop={(e) => {
             e.preventDefault()
             const { files } = e.dataTransfer
             setFile(files[0])
             setIsLoadingConvert(true)
+            setIsDragActive(false)
           }}
         >
           <FileDropzone
+            isActive={isDragActive}
             base64={base64}
             isLoading={isLoadingConvert}
           />
