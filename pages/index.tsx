@@ -73,11 +73,12 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
   const hasImages = !!images.length
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value)
+    let value = e.target.value
+    setSearch(value)
     setIsLoadingSearch(true)
     debounceSearchInput(async () => {
       const queryParam = {
-        q: e.target.value
+        q: value
       }
       const responseSearch = await axios
         .get<ApiResponse<Image[]>>('/api/images', {
@@ -87,7 +88,7 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
           return res.data.data
         })
       setIsLoadingSearch(false)
-      setImages(responseSearch)
+      setImagesStore(responseSearch)
     })
   }
 
@@ -150,9 +151,24 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
                   <ImageItem
                     {...image}
                     key={image.id}
-                    onDelete={(image: Image) => {
-                    const newImages = imagesStore.filter((item) => item.id !== image.id)
-                      setImagesStore(newImages)
+                    onDelete={async (image: Image) => {
+                      try {
+                        const response = await axios
+                          .get<ApiResponse<Image[]>>(
+                            '/api/images',
+                            {
+                              params: {
+                                q: search
+                              }
+                            }
+                          )
+                          .then((res) => {
+                            return res.data
+                          })
+                        setImagesStore(response.data)
+                      } catch (err) {
+                        console.log(err)
+                      }
                     }}
                   />
                 )
