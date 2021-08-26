@@ -28,13 +28,7 @@ const useStyles = makeStyles((props) => {
     listImage: {
       position: 'relative',
       minHeight: '100vh',
-      [props.breakpoints.up('md')]: {
-        marginTop: 24,
-        width: 888
-      },
-      [props.breakpoints.up('xl')]: {
-        width: 888
-      }
+      width: 888,
     },
     drawer: {
       width: 380,
@@ -115,7 +109,6 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
         spacing={2}
         direction="column"
         className={classes.listImage}
-        style={{marginTop: hasImages ? 24 : 0}}
       >
         {(!hasImages && !isLoadingSearch) && (
           <Typography variant="h4" className={classes.emptyState}>No Images Found</Typography>
@@ -143,6 +136,9 @@ const Home: NextPage<ApiResponse<Image[]>> = (props) => {
               type="search"
               value={search}
               onChange={searchHandler}
+              style={{
+                marginTop: 24
+              }}
             />
           </Grid>
         )}
