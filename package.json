@@ -2,6 +2,7 @@
   "name": "dagallery",
   "version": "0.1.0",
   "private": true,
+  "author": "Alfian Andi Nugraha",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
