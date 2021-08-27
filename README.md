@@ -1,6 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Dagallery
+Dagallery is a fullstack app to upload and store images, it also support to download.
+
+## Techstack
+- Nextjs
+- Cloundary
+- Firebase
+
+## Api Key
+This project has example env variables on `.example.env`, please create file `.env` on root project which contain all information about API KEY based on `.example.env`
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
