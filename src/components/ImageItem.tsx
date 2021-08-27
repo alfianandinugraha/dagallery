@@ -7,6 +7,7 @@ import Fab from "@material-ui/core/Fab";
 import {CloudDownload, Delete} from "@material-ui/icons";
 import axios from "axios";
 import {Button, CircularProgress} from "@material-ui/core";
+import {convertBase64} from "@src/helpers/base64";
 
 interface ImageItemProps extends Image {
   onDelete?: (image: Image) => void
@@ -84,14 +85,16 @@ const ImageItem = (props: ImageItemProps) => {
   const downloadImage = async () => {
     try {
       const res = await axios
-        .get(props.url, {responseType: "arraybuffer"})
+        .get(props.url, {responseType: "blob"})
         .then((response) => {
-          return Buffer.from(response.data, 'binary').toString('base64')
+          return response.data
         })
-      const anchor = document.createElement("a")
-      anchor.download = props.fileName
-      anchor.setAttribute('href', res)
-      anchor.click()
+      convertBase64(res, (payload) => {
+        const anchor = document.createElement("a")
+        anchor.download = props.fileName
+        anchor.setAttribute('href', payload)
+        anchor.click()
+      })
     } catch (err) {
       console.log(err)
     }
